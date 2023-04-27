@@ -1,0 +1,105 @@
+version: "3.8"
+
+networks:
+  ecommerce:
+    external: false
+
+services:
+  EcommerceMongoDB:
+    container_name: EcommerceMongoDB
+    image: mongo:latest
+    restart: always
+    hostname: EcommerceMongoDB
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce
+
+  basketServiceDBRedis:
+    container_name: basketServiceDBRedis
+    image: redis:latest
+    restart: always
+    hostname: basketServiceDBRedis
+    ports:
+      - "6379:6379"
+    networks:
+      - ecommerce
+
+  ecommerceEurekaRegistry:
+    container_name: ecommerceEurekaRegistry
+    image: steeltoeoss/eureka-server:latest
+    restart: always
+    hostname: ecommerceEurekaRegistry
+    ports:
+      - 8761:8761
+    networks:
+      - ecommerce
+
+  ecommerceGatewayOcelot:
+    container_name: ecommerceGatewayOcelot
+    build:
+      context: ./ecommerce-dotnet-apigateway-ocelot
+      dockerfile: Dockerfile
+    image: ecommerceocelotgatewayapi:1
+    restart: always
+    hostname: ecommerceGatewayOcelot
+    ports:
+      - 8093:80
+    networks:
+      - ecommerce
+    depends_on:      
+      - ecommerceEurekaRegistry
+
+  ItemAPI:
+    build:
+      context: ./ItemAPI
+      dockerfile: Dockerfile
+    image: itemapi:1
+    restart: always
+    ports:
+      - "8090"
+    networks:
+      - ecommerce
+    depends_on:
+      - EcommerceMongoDB
+      - ecommerceEurekaRegistry
+      - ecommerceGatewayOcelot
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  ecommerceBasketService:
+    build:
+      context: ./eCommerceBasket
+      dockerfile: Dockerfile
+    image: ecommercebasketservice:1
+    restart: always
+    ports:
+      - "8091"
+    networks:
+      - ecommerce    
+    depends_on:
+      - basketServiceDBRedis
+      - ecommerceEurekaRegistry
+      - ecommerceGatewayOcelot
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  ecomerceCheckOutService:
+    build:
+      context: ./CheckOutService
+      dockerfile: Dockerfile
+    image: ecomercecheckoutservice:1
+    restart: always
+    ports:
+      - "8092"
+    networks:
+      - ecommerce
+    depends_on:
+      - EcommerceMongoDB
+      - ecommerceEurekaRegistry
+      - ecommerceGatewayOcelot
+    deploy:
+      mode: replicated
+      replicas: 1

@@ -1,0 +1,73 @@
+{
+  "Routes": [
+    {
+      "ServiceName": "ItemAPI",
+      "DownstreamPathTemplate": "/{everything}",
+      "UpstreamPathTemplate": "/ecommerceapi/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection",
+        "Key": null,
+        "Expiry": 0
+      }
+    },
+    {
+      "ServiceName": "ecommerceBasketService",
+      "DownstreamPathTemplate": "/{everything}",
+      "UpstreamPathTemplate": "/basketserviceapi/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection",
+        "Key": null,
+        "Expiry": 0
+      }
+    },
+    {
+      "ServiceName": "ecomerceCheckOutService",
+      "DownstreamPathTemplate": "/{everything}",
+      "UpstreamPathTemplate": "/checkoutservice/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection",
+        "Key": null,
+        "Expiry": 0
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://ecommerceEurekaRegistry:80",
+    "RequestIdKey": "OcRequestId",
+    "DownstreamScheme": "http",
+    "ReRoutesCaseSensitive": false,
+    "UseServiceDiscovery": true,
+    "ServiceDiscoveryProvider": {
+      "Host": "ecommerceEurekaRegistry",
+      "Port": 8761,
+      "Type": "Eureka"
+    }
+  }
+}
