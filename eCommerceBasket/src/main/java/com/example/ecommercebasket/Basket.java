@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Basket implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     private String basketGuid;
@@ -19,6 +20,7 @@ public class Basket implements Serializable {
     public Basket(String id) {
         this.setBasketGuid(id);
     }
+
     public String getBasketGuid() {
         return basketGuid;
     }

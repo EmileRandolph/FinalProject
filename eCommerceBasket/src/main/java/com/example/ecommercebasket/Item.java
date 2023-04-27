@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class Item implements Serializable {
-    private static final long serialVersion =1l;
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     private UUID id;
     private String name;

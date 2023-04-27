@@ -13,5 +13,4 @@ WORKDIR /app4
 
 COPY --from=build-env /app3/outBuildFolder/* ./
 
-ENTRYPOINT ["dotnet", "dotnet-apigateway-ocelot.dll"]
-ENV EUREKA_HOST=ecommerceEurekaRegistry
+ENTRYPOINT ["dotnet", "OcelotGateway.dll"]

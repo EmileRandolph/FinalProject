@@ -1,17 +1,14 @@
-version: "3.8"
-
-networks:
-  ecommerce:
-    external: false
+version: "3"
 
 services:
   EcommerceMongoDB:
     container_name: EcommerceMongoDB
     image: mongo:latest
     restart: always
-    hostname: EcommerceMongoDB
     ports:
       - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
     networks:
       - ecommerce
 
@@ -19,9 +16,10 @@ services:
     container_name: basketServiceDBRedis
     image: redis:latest
     restart: always
-    hostname: basketServiceDBRedis
     ports:
       - "6379:6379"
+    volumes:
+      - redis_cache:/data
     networks:
       - ecommerce
 
@@ -38,16 +36,15 @@ services:
   ecommerceGatewayOcelot:
     container_name: ecommerceGatewayOcelot
     build:
-      context: ./ecommerce-dotnet-apigateway-ocelot
+      context: ./OcelotGateway
       dockerfile: Dockerfile
     image: ecommerceocelotgatewayapi:1
     restart: always
-    hostname: ecommerceGatewayOcelot
     ports:
-      - 8093:80
+      - 5041:80
     networks:
       - ecommerce
-    depends_on:      
+    depends_on:
       - ecommerceEurekaRegistry
 
   ItemAPI:
@@ -57,34 +54,34 @@ services:
     image: itemapi:1
     restart: always
     ports:
-      - "8090"
+      - "8080:8080"
     networks:
       - ecommerce
     depends_on:
       - EcommerceMongoDB
       - ecommerceEurekaRegistry
       - ecommerceGatewayOcelot
-    deploy:
-      mode: replicated
-      replicas: 1
+    # deploy:
+    #   mode: replicated
+    #   replicas: 1
 
-  ecommerceBasketService:
+  ecommerceBasket:
     build:
       context: ./eCommerceBasket
       dockerfile: Dockerfile
-    image: ecommercebasketservice:1
+    image: ecommercebasket:1
     restart: always
     ports:
-      - "8091"
+      - "8081:8080"
     networks:
-      - ecommerce    
+      - ecommerce
     depends_on:
       - basketServiceDBRedis
       - ecommerceEurekaRegistry
       - ecommerceGatewayOcelot
-    deploy:
-      mode: replicated
-      replicas: 1
+    # deploy:
+    #   mode: replicated
+    #   replicas: 1
 
   ecomerceCheckOutService:
     build:
@@ -103,3 +100,12 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+volumes:
+  mongodb_data_container:
+  redis_cache:
+    driver: local
+
+
+networks:
+  ecommerce:
+    external: false
