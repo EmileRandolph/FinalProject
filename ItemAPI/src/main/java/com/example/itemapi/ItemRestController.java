@@ -58,6 +58,7 @@ public class ItemRestController {
     public void updateItem(@RequestBody Item item, @PathVariable UUID itemID) {
         if (item.getId() == itemID) {
             itemRepo.save(item);
-        } else System.out.println("The items id's do not match");
+        } else
+            System.out.println("The items id's do not match");
     }
 }

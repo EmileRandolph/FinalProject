@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // you can use this style...
-IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("ocelot-eureka-dev.json").Build();
+IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("ocelot.json").Build();
 //IConfiguration configuration = new ConfigurationBuilder().AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json", true, true).Build();
 builder.Services.AddOcelot(configuration)
 .AddEureka()

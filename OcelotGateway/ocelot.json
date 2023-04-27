@@ -20,7 +20,7 @@
       }
     },
     {
-      "ServiceName": "ecommerceBasketService",
+      "ServiceName": "eCommerceBasket",
       "DownstreamPathTemplate": "/{everything}",
       "UpstreamPathTemplate": "/basketserviceapi/{everything}",
       "UpstreamHttpMethod": [
@@ -59,13 +59,13 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5041",
+    "BaseUrl": "http://ecommerceGatewayOcelot:5041",
     "RequestIdKey": "OcRequestId",
     "DownstreamScheme": "http",
     "ReRoutesCaseSensitive": false,
     "UseServiceDiscovery": true,
     "ServiceDiscoveryProvider": {
-      "Host": "localhost",
+      "Host": "ecommerceEurekaRegistry",
       "Port": 8761,
       "Type": "Eureka"
     }
