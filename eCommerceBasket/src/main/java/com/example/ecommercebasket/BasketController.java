@@ -82,7 +82,7 @@ public class BasketController {
     /*
      * private Item getItemFromAPI(UUID id){
      * try {
-     * URL url = new URL("http://localhost:8090/Item/" + id);
+     * URL url = new URL("http://localhost:8080/Item/" + id);
      * HttpURLConnection con = (HttpURLConnection) url.openConnection();
      * con.setRequestMethod("GET");
      * con.setRequestProperty("Accept", "application/json");

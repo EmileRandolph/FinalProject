@@ -1,9 +1,11 @@
 package com.example.checkoutservice.objects;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
+@Document(collection = "orders")
 public class Order {
     @Id
     private UUID orderId;
