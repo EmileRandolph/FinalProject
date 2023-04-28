@@ -83,23 +83,23 @@ services:
     #   mode: replicated
     #   replicas: 1
 
-  ecomerceCheckOutService:
+  CheckOutService:
     build:
       context: ./CheckOutService
       dockerfile: Dockerfile
-    image: ecomercecheckoutservice:1
+    image: checkoutservice:1
     restart: always
     ports:
-      - "8092"
+      - "8082:8080"
     networks:
       - ecommerce
     depends_on:
       - EcommerceMongoDB
       - ecommerceEurekaRegistry
       - ecommerceGatewayOcelot
-    deploy:
-      mode: replicated
-      replicas: 1
+    # deploy:
+    #   mode: replicated
+    #   replicas: 1
 volumes:
   mongodb_data_container:
   redis_cache:

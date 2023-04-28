@@ -39,7 +39,7 @@
       }
     },
     {
-      "ServiceName": "ecomerceCheckOutService",
+      "ServiceName": "CheckOutService",
       "DownstreamPathTemplate": "/{everything}",
       "UpstreamPathTemplate": "/checkoutservice/{everything}",
       "UpstreamHttpMethod": [
